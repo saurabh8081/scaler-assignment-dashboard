@@ -3,7 +3,8 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import AddRemoveStudent from "./components/AddRemoveStudent";
 import UploadMarks from "./components/UploadMarks";
-import MarksView from "./components/MarksView";
+import Status from "./components/Status";
+import Marksheet from "./components/Marksheet";
 
 function App() {
   return <Router> 
@@ -12,7 +13,8 @@ function App() {
       <Route path="/" element={<Home/>} />
       <Route path="/add-removeStudent" element={<AddRemoveStudent/>}/>     
       <Route path="/upload" element={<UploadMarks/>}/>     
-      <Route path="/marksview" element={<MarksView/>}/>
+      <Route path="/status" element={<Status/>}/>
+      <Route path="/marksheet" element={<Marksheet/>}/>
     </Routes>
   </Router>
 }

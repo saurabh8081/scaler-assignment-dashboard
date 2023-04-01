@@ -54,7 +54,7 @@ const Header = () => {
                 </Button>
 
                 <Button onClick={onClose} variant={"ghost"} colorScheme={"purple"}>
-                   <Link to= {'/marksview'}>Marks View</Link> 
+                   <Link to= {'/status'}>Student Marks Status</Link> 
                 </Button>
                 <Button onClick={onClose} variant={"ghost"} colorScheme={"purple"}>
                    <Link to= {'/marksheet'}>Student Marksheet</Link> 
