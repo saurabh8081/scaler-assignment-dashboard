@@ -25,22 +25,22 @@ const headingOptions = {
 };
 
 const Home = () => {
-    
-    const [posts, setPosts] = useState([]);
+  const [assignedStudents, setAssignedStudents] = useState([]);
 
-  useEffect(() => {
-    axios.get("https://localhost:5000/unassignedStudents")
-      .then((result) => {
-        console.log(result.data);
-        setPosts(result.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const fetchAssignedStudents = async (email) => {
+    try {
+      const response = await axios.post('http://localhost:5000/assignedStudents', { email });
+      setAssignedStudents(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  fetchAssignedStudents("sumit@gmail.com");
   return (
     <>
       {/* teacher details box */}
-      <Box>
+       <Box>
         <Card
           direction={{ base: 'column', sm: 'row' }}
           overflow="hidden"
@@ -55,30 +55,36 @@ const Home = () => {
 
           <Stack>
             <CardBody>
-              <Heading size="md">The perfect latte</Heading>
+              <Heading size="md">sumit</Heading>
               <Text py="2">
-                Caffè latte is a coffee beverage of Italian origin made with
-                espresso and steamed milk.
+              sumit@gmail.com
               </Text>
             </CardBody>
 
             <CardFooter>
               <Button variant="solid" colorScheme="blue">
-                Buy Latte
+               Add Student
               </Button>
             </CardFooter>
           </Stack>
         </Card>
       </Box>
-
-      {/* students box */}
       <HStack justifyContent="center" marginTop={'15'}>
         <Heading colorScheme="purple">STUDENT ASSIGNED</Heading>
       </HStack>
+      {
+       assignedStudents?.map((detail)=>{
+         const {name,uid,ideation,execution,viva,theory,email,evaluated,assigned}=detail;
+           
+         return <div   key={uid}>
+              
+
+      {/* students box */}
+      
       <Container>
         <Card marginLeft={'50'} marginTop={'20'} w={'50'}>
           <CardHeader display="flex" alignItems="center">
-            <Heading size="md">{posts.name}</Heading>
+            <Heading size="md">{name}</Heading>
             <Spacer />
             <Button colorScheme="teal" size="xs">
               Remove
@@ -90,32 +96,31 @@ const Home = () => {
             <Stack divider={<StackDivider />} spacing="4">
               <Box>
                 <Heading size="xs" textTransform="uppercase">
-                  Summary
+                  UID :
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  View a summary of all your clients over the last month.
+                 {uid}
                 </Text>
               </Box>
               <Box>
                 <Heading size="xs" textTransform="uppercase">
-                  Overview
+                 E-mail:
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  Check out the overview of your clients.
+                 {email}
                 </Text>
               </Box>
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  Analysis
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                  See a detailed analysis of all your business clients.
-                </Text>
-              </Box>
+              
             </Stack>
           </CardBody>
         </Card>
       </Container>
+         </div>
+
+        })
+      }
+      
+      
     </>
   );
 };

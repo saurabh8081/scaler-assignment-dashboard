@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Heading,
@@ -8,9 +8,11 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react';
+import axios from "axios"
 
 const UploadMarks = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [assignedStudents, setAssignedStudents] = useState([]);
+  const [selectedUid, setSelectedUid] = useState(null);
   const [marks, setMarks] = useState({
     subject1: '',
     subject2: '',
@@ -18,8 +20,20 @@ const UploadMarks = () => {
     subject4: '',
   });
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const fetchAssignedStudents = async (email) => {
+    try {
+      const response = await axios.post('http://localhost:5000/assignedStudents', { email });
+      setAssignedStudents(response.data);
+      if (response.data.length > 0) {
+        setSelectedUid(response.data[0].uid);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUidChange = (event) => {
+    setSelectedUid(event.target.value);
   };
 
   const handleMarksChange = (event) => {
@@ -30,30 +44,50 @@ const UploadMarks = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(marks); // You can replace this with your API call to submit marks
+    console.log(marks); // You can remove this line
+  try {
+    const { subject1, subject2, subject3, subject4 } = marks;
+    const response = await axios.post('http://localhost:5000/evaluateStudent', {
+      uid: selectedUid,
+      ideation: subject1,
+      execution: subject2,
+      viva: subject3,
+      theory: subject4,
+    });
+    console.log(response.data);
+    // Show success message to the user
+  } catch (error) {
+    console.log(error);
+    // Show error message to the user
+  }
   };
+
+  useEffect(() => {
+    fetchAssignedStudents("sumit@gmail.com");
+  }, []);
 
   return (
     <>
       <Container marginTop={'10'}>
         <Heading>Upload Marks</Heading>
-        <Select
-          placeholder="Select option"
-          marginTop={'10'}
-          value={selectedOption}
-          onChange={handleOptionChange}
-        >
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-          <option value="option4">Option 4</option>
-        </Select>
-        {selectedOption && (
+        {assignedStudents.length > 0 && (
           <>
+            <Select
+              placeholder="Select student"
+              marginTop={'10'}
+              value={selectedUid}
+              onChange={handleUidChange}
+            >
+              {assignedStudents.map(student => (
+                <option key={student.uid} value={student.uid}>
+                  {student.name}
+                </option>
+              ))}
+            </Select>
             <Heading as="h2" size="md" marginTop={'10'}>
-              Selected User: {selectedOption}
+              Selected Student: {selectedUid}
             </Heading>
             <form onSubmit={handleSubmit}>
               <FormControl marginTop={'10'}>
@@ -99,6 +133,8 @@ const UploadMarks = () => {
               <Button type="submit" variant="solid" colorScheme="blue" marginTop={'10'}>
                 Upload Marks
               </Button>
+            
+
             </form>
           </>
         )}

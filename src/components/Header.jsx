@@ -37,7 +37,7 @@ const Header = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Evaluation Dashboard App - Mentor View</DrawerHeader>
+          <DrawerHeader>Evaluation Dashboard App</DrawerHeader>
           <DrawerBody>
             <VStack alignItems={"flex-start"}>
                 <Button onClick={onClose} variant={"ghost"} colorScheme={"purple"}>

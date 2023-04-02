@@ -1,150 +1,82 @@
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import { Box, Container, Heading, Stack, Text, Image, StackDivider, VStack, HStack } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
-import React from 'react'
+import axios  from 'axios';
+import React,{useEffect,useState} from 'react';
 
-const AddStudent = () => {
+const AddRemoveStudent = () => {
+  const [myData,setMyData]=useState();
+
+  useEffect(()=>{
+    axios.get('http://localhost:5000/unassignedStudents').then((res)=>
+    setMyData(res.data));
+  },[]);
+
+  const  assignStudent = async (email, uid) => {
+   await axios.post('http://localhost:5000/assignStudent', { email, uid })
+      .then(res => {
+        console.log(res.data);
+        // TODO: handle successful response
+      })
+      .catch(err => {
+        console.error(err);
+        // TODO: handle error response
+      });
+  }
+
   return (
     <>
-{/* add remove Students */}
-<Box>
-    <Container>
-    <Heading m={"10"}>Add Students</Heading>
-    </Container>
-<Card
-  direction={{ base: 'column', sm: 'row' }}
-  overflow='hidden'
-  variant='outline'
-  m={"20"}
->
-  <Image
-    objectFit='cover'
-    maxW={{ base: '100%', sm: '200px' }}
-    src='https://i0.wp.com/www.artstation.com/assets/default_avatar.jpg?ssl=1'
-  />
+      {/* add remove Students */}
+      <Container>
+        <Heading m={"10"}>Add Students</Heading>
+      </Container>
 
-  <Stack>
-    <CardBody>
-      <Heading size='md'>The perfect latte</Heading>
-      <Text py='2'>
-        Caffè latte is a coffee beverage of Italian origin made with espresso
-        and steamed milk.
-      </Text>
-    </CardBody>
+      {myData?.map((detail)=>{
+        const {name,uid,ideation,execution,viva,theory,email,evaluated,assigned}=detail;
 
-    <CardFooter>
-      <Button variant='solid' colorScheme='blue'>
-        Buy Latte
-      </Button>
-      <Button variant='solid' colorScheme='blue' marginLeft={"5"}>
-        Buy Latte
-      </Button>
-    </CardFooter>
-  </Stack>
-</Card>
+        return (
+          <div key={uid}>
+            <Box>
+              <Card
+                direction={{ base: 'column', sm: 'row' }}
+                overflow='hidden'
+                variant='outline'
+                m={"20"}
+              >
+                <Image
+                  objectFit='cover'
+                  maxW={{ base: '100%', sm: '200px' }}
+                  src='https://i0.wp.com/www.artstation.com/assets/default_avatar.jpg?ssl=1'
+                />
 
-<Card
-  direction={{ base: 'column', sm: 'row' }}
-  overflow='hidden'
-  variant='outline'
-  m={"20"}
->
-  <Image
-    objectFit='cover'
-    maxW={{ base: '100%', sm: '200px' }}
-    src='https://i0.wp.com/www.artstation.com/assets/default_avatar.jpg?ssl=1'
-  />
+                <Stack>
+                  <CardBody>
+                    <Heading size='md'>Name: {name}</Heading>
+                    <Text py='2'>
+                    E-Mail: {email}
+                    </Text>
+                    <Text py='2'>
+                    UID:{uid}
+                    </Text>
+                  </CardBody>
 
-  <Stack>
-    <CardBody>
-      <Heading size='md'>The perfect latte</Heading>
-
-      <Text py='2'>
-        Caffè latte is a coffee beverage of Italian origin made with espresso
-        and steamed milk.
-      </Text>
-    </CardBody>
-
-    <CardFooter>
-      <Button variant='solid' colorScheme='blue'>
-        Buy Latte
-      </Button>
-      <Button variant='solid' colorScheme='blue' marginLeft={"5"}>
-        Buy Latte
-      </Button>
-    </CardFooter>
-  </Stack>
-</Card>
-
-<Card
-  direction={{ base: 'column', sm: 'row' }}
-  overflow='hidden'
-  variant='outline'
-  m={"20"}
->
-  <Image
-    objectFit='cover'
-    maxW={{ base: '100%', sm: '200px' }}
-    src='https://i0.wp.com/www.artstation.com/assets/default_avatar.jpg?ssl=1'
-  />
-
-  <Stack>
-    <CardBody>
-      <Heading size='md'>The perfect latte</Heading>
-
-      <Text py='2'>
-        Caffè latte is a coffee beverage of Italian origin made with espresso
-        and steamed milk.
-      </Text>
-    </CardBody>
-
-    <CardFooter>
-      <Button variant='solid' colorScheme='blue'>
-        Buy Latte
-      </Button>
-      <Button variant='solid' colorScheme='blue' marginLeft={"5"}>
-        Buy Latte
-      </Button>
-    </CardFooter>
-  </Stack>
-</Card>
-
-<Card
-  direction={{ base: 'column', sm: 'row' }}
-  overflow='hidden'
-  variant='outline'
-  m={"20"}
->
-  <Image
-    objectFit='cover'
-    maxW={{ base: '100%', sm: '200px' }}
-    src='https://i0.wp.com/www.artstation.com/assets/default_avatar.jpg?ssl=1'
-  />
-
-  <Stack>
-    <CardBody>
-      <Heading size='md'>The perfect latte</Heading>
-
-      <Text py='2'>
-        Caffè latte is a coffee beverage of Italian origin made with espresso
-        and steamed milk.
-      </Text>
-    </CardBody>
-
-    <CardFooter>
-      <Button variant='solid' colorScheme='blue'>
-        Buy Latte
-      </Button>
-      <Button variant='solid' colorScheme='blue' marginLeft={"5"}>
-        Buy Latte
-      </Button>
-    </CardFooter>
-  </Stack>
-</Card>
-
-</Box>
+                  <CardFooter>
+                    <Button
+                      variant='solid'
+                      colorScheme='blue'
+                      onClick={() =>  assignStudent(email, uid)}
+                    >
+                      ASSIGN
+                    </Button>
+                  </CardFooter>
+                </Stack>
+              </Card>
+            </Box>
+          </div>
+        )
+      })}
     </>
   )
 }
 
-export default AddStudent
+export default AddRemoveStudent

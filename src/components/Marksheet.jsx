@@ -1,10 +1,28 @@
-import React, { useRef } from 'react'
+import React, { useRef ,useEffect,useState} from 'react'
 import { useReactToPrint } from "react-to-print";
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import { Box, Container, Heading, Text, Image, StackDivider, VStack, HStack,Select,Stack,Button} from '@chakra-ui/react';
+import axios from "axios"
 
 
 const Marksheet = () => {
+
+
+  const [myData,setMyData]=useState();
+  
+
+
+  
+  
+
+
+  useEffect(()=>{
+    axios.get('http://localhost:5000/allstudents').then((res)=>
+   setMyData(res.data))
+  
+  },[]);
+
+
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -17,147 +35,42 @@ const Marksheet = () => {
     <Container>
         <Heading m={"5"}>Student Marks View</Heading>
     </Container>
+    {myData?.map((detail)=>{
+   const {name,uid,ideation,execution,viva,theory,email,evaluated,assigned}=detail;
+           
+   return <div   key={uid}>
 <Box ref={componentRef}>
 <Card margin={"5"}>
   <CardHeader>
-    <Heading size='md'>Client Report</Heading>
+    <Heading size='md'>Name : {name}</Heading>
   </CardHeader>
 
   <CardBody>
     <Stack divider={<StackDivider />} spacing='4'>
       <Box>
         <Heading size='xs' textTransform='uppercase'>
-          Summary
+        UID:{uid}
         </Heading>
         <Text pt='2' fontSize='sm'>
-          View a summary of all your clients over the last month.
+          Ideation Marks : {ideation} <br></br>
+          Execution Marks : {execution}<br></br>
+          Viva Marks : {execution}<br></br>
+          Theory Marks : {execution}<br></br>
+
         </Text>
       </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Overview
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          Check out the overview of your clients.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Analysis
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          See a detailed analysis of all your business clients.
-        </Text>
-      </Box>
+     
     </Stack>
   </CardBody>
 </Card>
 
-<Card margin={"5"}>
-  <CardHeader>
-    <Heading size='md'>Client Report</Heading>
-  </CardHeader>
-
-  <CardBody>
-    <Stack divider={<StackDivider />} spacing='4'>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Summary
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          View a summary of all your clients over the last month.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Overview
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          Check out the overview of your clients.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Analysis
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          See a detailed analysis of all your business clients.
-        </Text>
-      </Box>
-    </Stack>
-  </CardBody>
-</Card>
-
-<Card margin={"5"}>
-  <CardHeader>
-    <Heading size='md'>Client Report</Heading>
-  </CardHeader>
-
-  <CardBody>
-    <Stack divider={<StackDivider />} spacing='4'>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Summary
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          View a summary of all your clients over the last month.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Overview
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          Check out the overview of your clients.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Analysis
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          See a detailed analysis of all your business clients.
-        </Text>
-      </Box>
-    </Stack>
-  </CardBody>
-</Card>
-
-<Card margin={"5"}>
-  <CardHeader>
-    <Heading size='md'>Client Report</Heading>
-  </CardHeader>
-
-  <CardBody>
-    <Stack divider={<StackDivider />} spacing='4'>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Summary
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          View a summary of all your clients over the last month.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Overview
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          Check out the overview of your clients.
-        </Text>
-      </Box>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-          Analysis
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          See a detailed analysis of all your business clients.
-        </Text>
-      </Box>
-    </Stack>
-  </CardBody>
-</Card>
 </Box>
+    </div>
+
+
+})}
+    
+
 <Button onClick={handlePrint} className="print__button" colorScheme='purple' variant={"outline"} m={"5"}>  Print </Button>
 </>
   )
