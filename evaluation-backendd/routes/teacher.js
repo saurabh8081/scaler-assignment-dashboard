@@ -20,10 +20,12 @@ teacherRouter.post(
 teacherRouter.post(
   "/evaluateStudent",
   teacherMidWare,
+  studentMidWare,
   controller.evaluateStudent
 );
 teacherRouter.post(
   "/evaluatedStudents",
+  teacherMidWare,
   controller.evaluatedStudents
 );
 teacherRouter.post(
@@ -36,9 +38,6 @@ teacherRouter.post(
   teacherMidWare,
   controller.assignedStudents
 );
-teacherRouter.post(
-  "/getTeacherData",
-  teacherMidWare,
-  controller.getTeacherData
-);
+
+
 module.exports = teacherRouter;

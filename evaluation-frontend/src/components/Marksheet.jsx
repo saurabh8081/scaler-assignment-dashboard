@@ -9,15 +9,9 @@ const Marksheet = () => {
 
 
   const [myData,setMyData]=useState();
-  
-
-
-  
-  
-
 
   useEffect(()=>{
-    axios.get('http://localhost:5000/allstudents').then((res)=>
+    axios.get('http://localhost:5000/student/allstudents').then((res)=>
    setMyData(res.data))
   
   },[]);

@@ -10,7 +10,7 @@ const MarksView = () => {
 
   const fetchAssignedStudents = async (email) => {
     try {
-      const response = await axios.post('http://localhost:5000/evaluatedStudents', { email });
+      const response = await axios.post('http://localhost:5000/teacher/evaluatedStudents', { email });
       setEvaluatedStudents(response.data);
     } catch (error) {
       console.log(error);
@@ -19,7 +19,7 @@ const MarksView = () => {
 
   const fetchUnassignedStudents = async (email) => {
     try {
-      const response = await axios.post('http://localhost:5000/unEvaluatedStudents', { email });
+      const response = await axios.post('http://localhost:5000/teacher/unEvaluatedStudents', { email });
       setUnEvaluatedStudents(response.data);
     } catch (error) {
       console.log(error);

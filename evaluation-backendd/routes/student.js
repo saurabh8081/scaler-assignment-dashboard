@@ -7,14 +7,13 @@ const Student=require("../models/student")
 studentRouter.post("/createStudent", StudentController.createStudent);
 
 studentRouter.get("/unassignedStudents", StudentController.unassignedStudents);
-
 studentRouter.get("/allstudents", async (req, res) => {
-    try {
-      const students = await Student.find();
-      res.json(students);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  });
+  try {
+    const students = await Student.find();
+    res.json(students);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = studentRouter;

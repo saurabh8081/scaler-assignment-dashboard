@@ -8,12 +8,14 @@ const AddRemoveStudent = () => {
   const [myData,setMyData]=useState();
 
   useEffect(()=>{
-    axios.get('http://localhost:5000/unassignedStudents').then((res)=>
+    axios.get('http://localhost:5000/student/unassignedStudents').then((res)=>
     setMyData(res.data));
   },[]);
 
   const  assignStudent = async (email, uid) => {
-   await axios.post('http://localhost:5000/assignStudent', { email, uid })
+    console.log(email,uid);
+    email="sumit@gmail.com";
+   await axios.post('http://localhost:5000/teacher/assignStudent', { email, uid })
       .then(res => {
         console.log(res.data);
         // TODO: handle successful response

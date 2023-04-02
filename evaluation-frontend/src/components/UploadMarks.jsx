@@ -22,7 +22,7 @@ const UploadMarks = () => {
 
   const fetchAssignedStudents = async (email) => {
     try {
-      const response = await axios.post('http://localhost:5000/assignedStudents', { email });
+      const response = await axios.post('http://localhost:5000/teacher/assignedStudents', { email });
       setAssignedStudents(response.data);
       if (response.data.length > 0) {
         setSelectedUid(response.data[0].uid);
@@ -46,24 +46,24 @@ const UploadMarks = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(marks); 
-  try {
-    const { subject1, subject2, subject3, subject4 } = marks;
-    const response = await axios.post('http://localhost:5000/evaluateStudent', {
-      uid: selectedUid,
-      ideation: subject1,
-      execution: subject2,
-      viva: subject3,
-      theory: subject4,
-    });
-    console.log(response.data);
-    // Show success message to the user
-    return
-  } catch (error) {
-    console.log(error);
-    return
-    // Show error message to the user
-  }
+    console.log(marks); // You can remove this line
+    console.log(selectedUid);
+    try {
+      const { subject1, subject2, subject3, subject4 } = marks;
+      const response = await axios.post('http://localhost:5000/teacher/evaluateStudent', {
+        email: "sumit@gmail.com",
+        uid: selectedUid,
+        ideation: subject1,
+        execution: subject2,
+        viva: subject3,
+        theory: subject4,
+      });
+      console.log(response.data);
+      // Show success message to the user
+    } catch (error) {
+      console.log(error);
+      // Show error message to the user
+    }
   };
 
   useEffect(() => {
@@ -132,10 +132,10 @@ const UploadMarks = () => {
                   required
                 />
               </FormControl>
-              <Button onClick={handleSubmit} type="submit" variant="solid" colorScheme="blue" marginTop={'10'}>
+              <Button type="submit" onClick={handleSubmit} variant="solid" colorScheme="blue" marginTop={'10'}>
                 Upload Marks
               </Button>
-            
+
 
             </form>
           </>

@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
-import axios  from 'axios';
-import React,{useEffect,useState} from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const headingOptions = {
   pos: 'absolute',
@@ -24,23 +24,38 @@ const headingOptions = {
   size: '4xl',
 };
 
+
 const Home = () => {
   const [assignedStudents, setAssignedStudents] = useState([]);
 
   const fetchAssignedStudents = async (email) => {
     try {
-      const response = await axios.post('http://localhost:5000/assignedStudents', { email });
+      const response = await axios.post('http://localhost:5000/teacher/assignedStudents', { email });
       setAssignedStudents(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const removeStudent = async (email, uid) => {
+    console.log(email, uid);
+    email = "sumit@gmail.com";
+    await axios.post('http://localhost:5000/teacher/removeStudent', { email, uid })
+      .then(res => {
+        console.log(res.data);
+        // TODO: handle successful response
+      })
+      .catch(err => {
+        console.error(err);
+        // TODO: handle error response
+      });
+  }
+  
   fetchAssignedStudents("sumit@gmail.com");
   return (
     <>
       {/* teacher details box */}
-       <Box>
+      <Box>
         <Card
           direction={{ base: 'column', sm: 'row' }}
           overflow="hidden"
@@ -57,13 +72,13 @@ const Home = () => {
             <CardBody>
               <Heading size="md">sumit</Heading>
               <Text py="2">
-              sumit@gmail.com
+                sumit@gmail.com
               </Text>
             </CardBody>
 
             <CardFooter>
               <Button variant="solid" colorScheme="blue">
-               Add Student
+                Add Student
               </Button>
             </CardFooter>
           </Stack>
@@ -73,54 +88,55 @@ const Home = () => {
         <Heading colorScheme="purple">STUDENT ASSIGNED</Heading>
       </HStack>
       {
-       assignedStudents?.map((detail)=>{
-         const {name,uid,ideation,execution,viva,theory,email,evaluated,assigned}=detail;
-           
-         return <div   key={uid}>
-              
+        assignedStudents?.map((detail) => {
+          const { name, uid, ideation, execution, viva, theory, email, evaluated, assigned } = detail;
 
-      {/* students box */}
-      
-      <Container>
-        <Card marginLeft={'50'} marginTop={'20'} w={'50'}>
-          <CardHeader display="flex" alignItems="center">
-            <Heading size="md">{name}</Heading>
-            <Spacer />
-            <Button colorScheme="teal" size="xs">
-              Remove
-            </Button>
-          </CardHeader>
+          return <div>
 
-          {/* students details box */}
-          <CardBody>
-            <Stack divider={<StackDivider />} spacing="4">
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  UID :
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                 {uid}
-                </Text>
-              </Box>
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                 E-mail:
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                 {email}
-                </Text>
-              </Box>
-              
-            </Stack>
-          </CardBody>
-        </Card>
-      </Container>
-         </div>
+
+            {/* students box */}
+
+            <Container>
+              <Card marginLeft={'50'} marginTop={'20'} w={'50'}>
+                <CardHeader display="flex" alignItems="center">
+                  <Heading size="md">{name}</Heading>
+                  <Spacer />
+                  <Button onClick={()=>removeStudent(email,uid)} colorScheme="teal" size="xs">
+                    Remove
+                  </Button>
+                  
+                </CardHeader>
+
+                {/* students details box */}
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing="4">
+                    <Box>
+                      <Heading size="xs" textTransform="uppercase">
+                        UID :
+                      </Heading>
+                      <Text pt="2" fontSize="sm">
+                        {uid}
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Heading size="xs" textTransform="uppercase">
+                        E-mail:
+                      </Heading>
+                      <Text pt="2" fontSize="sm">
+                        {email}
+                      </Text>
+                    </Box>
+
+                  </Stack>
+                </CardBody>
+              </Card>
+            </Container>
+          </div>
 
         })
       }
-      
-      
+
+
     </>
   );
 };

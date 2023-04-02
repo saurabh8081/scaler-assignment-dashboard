@@ -78,10 +78,10 @@ class TeacherController {
     try {
       const { uid, ideation, execution, viva, theory } = await req.body;
       const student = await Student.findOne({ uid: uid });
-      if (student.evaluated == true) {
-        res.status(400).json({ message: "student already evaluated" });
-        return;
-      }
+      // if (student.evaluated == true) {
+      //   res.status(400).json({ message: "student already evaluated" });
+      //   return;
+      // }
       Student.updateOne(
         { uid: uid },
         {
@@ -99,64 +99,40 @@ class TeacherController {
     }
   }
   async evaluatedStudents(req, res) {
-    try {
-      const { email } = await req.body;
-      Teacher.findOne({ email: email })
-        .populate("students")
-        .then((teacher) => {
-          let evaluated = [];
-          for (let i = 0; i < teacher.students.length; i++) {
-            if (teacher.students[i].evaluated == true) {
-              evaluated.push(teacher.students[i]);
-            }
+    const { email } = await req.body;
+    Teacher.findOne({ email: email })
+      .populate("students")
+      .then((teacher) => {
+        let evaluated = [];
+        for (let i = 0; i < teacher.students.length; i++) {
+          if (teacher.students[i].evaluated == true) {
+            evaluated.push(teacher.students[i]);
           }
-          res.json(evaluated);
-        });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+        }
+        res.json(evaluated);
+      });
   }
   async unEvaluatedStudents(req, res) {
-    try {
-      const { email } = await req.body;
-      Teacher.findOne({ email: email })
-        .populate("students")
-        .then((teacher) => {
-          let evaluated = [];
-          for (let i = 0; i < teacher.students.length; i++) {
-            if (teacher.students[i].evaluated == false) {
-              evaluated.push(teacher.students[i]);
-            }
+    const { email } = await req.body;
+    Teacher.findOne({ email: email })
+      .populate("students")
+      .then((teacher) => {
+        let evaluated = [];
+        for (let i = 0; i < teacher.students.length; i++) {
+          if (teacher.students[i].evaluated == false) {
+            evaluated.push(teacher.students[i]);
           }
-          res.json(evaluated);
-        });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+        }
+        res.json(evaluated);
+      });
   }
   async assignedStudents(req, res) {
-    try {
-      const { email } = await req.body;
-      Teacher.findOne({ email: email })
-        .populate("students")
-        .then((teacher) => {
-          res.json(teacher.students);
-        });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
-  }
-  async getTeacherData(req, res) {
-    try {
-      const { email } = await req.body;
-      Teacher.findOne({ email: email })
-        .populate("students")
-        .then((teacher) => {
-          res.json(teacher);
-        });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+    const { email } = await req.body;
+    Teacher.findOne({ email: email })
+      .populate("students")
+      .then((teacher) => {
+        res.json(teacher.students);
+      });
   }
 }
 
