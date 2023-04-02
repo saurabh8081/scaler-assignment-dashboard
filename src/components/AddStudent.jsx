@@ -1,14 +1,15 @@
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
-import { Box, Container, Heading, Stack, Text, Image, StackDivider, VStack, HStack, Button } from '@chakra-ui/react';
+import { Box, Container, Heading, Stack, Text, Image, StackDivider, VStack, HStack } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@chakra-ui/react';
 import React from 'react'
 
-const AddRemoveStudent = () => {
+const AddStudent = () => {
   return (
     <>
 {/* add remove Students */}
 <Box>
     <Container>
-    <Heading m={"10"}>Add/Remove Students</Heading>
+    <Heading m={"10"}>Add Students</Heading>
     </Container>
 <Card
   direction={{ base: 'column', sm: 'row' }}
@@ -25,7 +26,6 @@ const AddRemoveStudent = () => {
   <Stack>
     <CardBody>
       <Heading size='md'>The perfect latte</Heading>
-
       <Text py='2'>
         Caffè latte is a coffee beverage of Italian origin made with espresso
         and steamed milk.
@@ -147,4 +147,4 @@ const AddRemoveStudent = () => {
   )
 }
 
-export default AddRemoveStudent
+export default AddStudent
