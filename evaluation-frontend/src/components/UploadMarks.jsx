@@ -46,7 +46,7 @@ const UploadMarks = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(marks); // You can remove this line
+    console.log(marks); 
   try {
     const { subject1, subject2, subject3, subject4 } = marks;
     const response = await axios.post('http://localhost:5000/evaluateStudent', {
@@ -58,8 +58,10 @@ const UploadMarks = () => {
     });
     console.log(response.data);
     // Show success message to the user
+    return
   } catch (error) {
     console.log(error);
+    return
     // Show error message to the user
   }
   };
@@ -130,7 +132,7 @@ const UploadMarks = () => {
                   required
                 />
               </FormControl>
-              <Button type="submit" variant="solid" colorScheme="blue" marginTop={'10'}>
+              <Button onClick={handleSubmit} type="submit" variant="solid" colorScheme="blue" marginTop={'10'}>
                 Upload Marks
               </Button>
             
