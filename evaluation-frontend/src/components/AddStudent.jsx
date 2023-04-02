@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, CardFooter,useToast } from '@chakra-ui/react'
 import { Box, Container, Heading, Stack, Text, Image, StackDivider, VStack, HStack } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import axios  from 'axios';
@@ -6,6 +6,7 @@ import React,{useEffect,useState} from 'react';
 
 const AddRemoveStudent = () => {
   const [myData,setMyData]=useState();
+  const toast = useToast();
 
   useEffect(()=>{
     axios.get('http://localhost:5000/student/unassignedStudents').then((res)=>
@@ -18,7 +19,14 @@ const AddRemoveStudent = () => {
    await axios.post('http://localhost:5000/teacher/assignStudent', { email, uid })
       .then(res => {
         console.log(res.data);
-        // TODO: handle successful response
+        toast({
+          title: "Student assigned successfully",
+          status: "success",
+          position: "top",
+          colorScheme:"purple",
+          duration: 5000,
+          isClosable: true,
+        });
       })
       .catch(err => {
         console.error(err);

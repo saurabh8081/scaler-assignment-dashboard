@@ -23,51 +23,47 @@ const Marksheet = () => {
       content: () => componentRef.current,
     });   
 
-
-  return (
-    <>
-    <Container>
-        <Heading m={"5"}>Student Marks View</Heading>
-    </Container>
-    {myData?.map((detail)=>{
-   const {name,uid,ideation,execution,viva,theory,email,evaluated,assigned}=detail;
-           
-   return <div   key={uid}>
-<Box ref={componentRef}>
-<Card margin={"5"}>
-  <CardHeader>
-    <Heading size='md'>Name : {name}</Heading>
-  </CardHeader>
-
-  <CardBody>
-    <Stack divider={<StackDivider />} spacing='4'>
-      <Box>
-        <Heading size='xs' textTransform='uppercase'>
-        UID:{uid}
-        </Heading>
-        <Text pt='2' fontSize='sm'>
-          Ideation Marks : {ideation} <br></br>
-          Execution Marks : {execution}<br></br>
-          Viva Marks : {execution}<br></br>
-          Theory Marks : {execution}<br></br>
-
-        </Text>
-      </Box>
-     
-    </Stack>
-  </CardBody>
-</Card>
-
-</Box>
-    </div>
-
-
-})}
-    
-
-<Button onClick={handlePrint} className="print__button" colorScheme='purple' variant={"outline"} m={"5"}>  Print </Button>
-</>
-  )
-}
+    return (
+      <>
+        <Container>
+          <Heading m={'5'}>Student Marks View</Heading>
+        </Container>
+        <Box>
+        <Button onClick={handlePrint} className='print__button' colorScheme='purple' variant={'outline'} m={'5'} >
+          Download
+        </Button>
+        </Box>
+        <Box ref={componentRef}>
+          {myData?.map((detail) => {
+            const { name, uid, ideation, execution, viva, theory, email, evaluated, assigned } = detail;
+  
+            return (
+              <Card key={uid} margin={'5'}>
+                <CardHeader>
+                  <Heading size='md'>Name: {name}</Heading>
+                </CardHeader>
+  
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing='4'>
+                    <Box>
+                      <Heading size='xs' textTransform='uppercase'>
+                        UID:{uid}
+                      </Heading>
+                      <Text pt='2' fontSize='sm'>
+                        Ideation Marks: {ideation} <br></br>
+                        Execution Marks: {execution}<br></br>
+                        Viva Marks: {viva}<br></br>
+                        Theory Marks: {theory}<br></br>
+                      </Text>
+                    </Box>
+                  </Stack>
+                </CardBody>
+              </Card>
+            );
+          })}
+        </Box>
+      </>
+    );
+  };
 
 export default Marksheet;

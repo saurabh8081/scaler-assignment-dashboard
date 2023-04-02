@@ -48,6 +48,19 @@ class StudentController {
       res.staus(500).json({ error: e.message });
     }
   }
+  async lockStudent(req,res){
+    try{
+      const {uid} = await req.body;
+      await Student.updateOne({uid:uid},{evaluated:true});
+      res.json({message:"Marks Locked"});
+    }
+    catch (e) {
+      res.staus(500).json({ error: e.message });
+    }
+  }
+
 }
+
+
 
 module.exports = new StudentController();

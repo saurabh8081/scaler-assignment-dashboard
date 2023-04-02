@@ -7,6 +7,9 @@ import {
   FormLabel,
   Input,
   Button,
+  useToast,
+  Flex,
+  Spacer
 } from '@chakra-ui/react';
 import axios from "axios"
 
@@ -14,15 +17,17 @@ const UploadMarks = () => {
   const [assignedStudents, setAssignedStudents] = useState([]);
   const [selectedUid, setSelectedUid] = useState(null);
   const [marks, setMarks] = useState({
-    subject1: '',
-    subject2: '',
-    subject3: '',
-    subject4: '',
+    Ideation: '',
+    Execution: '',
+    Theory: '',
+    Viva: '',
   });
+
+  const toast = useToast();
 
   const fetchAssignedStudents = async (email) => {
     try {
-      const response = await axios.post('http://localhost:5000/teacher/assignedStudents', { email });
+      const response = await axios.post('http://localhost:5000/teacher/unevaluatedStudents', { email });
       setAssignedStudents(response.data);
       if (response.data.length > 0) {
         setSelectedUid(response.data[0].uid);
@@ -46,20 +51,78 @@ const UploadMarks = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(marks); // You can remove this line
+    console.log(marks);
     console.log(selectedUid);
     try {
-      const { subject1, subject2, subject3, subject4 } = marks;
+      const { Ideation, Execution,Theory,Viva } = marks;
       const response = await axios.post('http://localhost:5000/teacher/evaluateStudent', {
         email: "sumit@gmail.com",
         uid: selectedUid,
-        ideation: subject1,
-        execution: subject2,
-        viva: subject3,
-        theory: subject4,
+        ideation: Ideation,
+        execution: Execution,
+        viva: Theory,
+        theory: Viva,
       });
       console.log(response.data);
       // Show success message to the user
+      toast({
+        title: "Marks uploaded successfully",
+        status: "success",
+        position: "top",
+        colorScheme: "purple",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.log(error);
+      // Show error message to the user
+    }
+  };
+  const handleFinalSubmit = async (event) => {
+    event.preventDefault();
+    console.log(marks);
+    console.log(selectedUid);
+    try {
+      const { Ideation, Execution,Theory,Viva } = marks;
+      const response = await axios.post('http://localhost:5000/teacher/evaluateStudent', {
+        email: "sumit@gmail.com",
+        uid: selectedUid,
+        ideation: Ideation,
+        execution: Execution,
+        viva: Theory,
+        theory: Viva,
+      });
+      console.log(response.data);
+      // Show success message to the user
+      
+      toast({
+        title: "Marks uploaded successfully",
+        status: "success",
+        position: "top",
+        colorScheme: "purple",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.log(error);
+      // Show error message to the user
+    }
+
+    try {
+      const { Ideation, Execution,Theory,Viva } = marks;
+      const response = await axios.post('http://localhost:5000/student/lockStudent', {
+        uid: selectedUid
+      });
+      console.log(response.data);
+      // Show success message to the user
+      toast({
+        title: "Marks locked sucessfully",
+        status: "success",
+        position: "top",
+        colorScheme: "purple",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.log(error);
       // Show error message to the user
@@ -70,7 +133,8 @@ const UploadMarks = () => {
     fetchAssignedStudents("sumit@gmail.com");
   }, []);
 
-  return (
+
+return (
     <>
       <Container marginTop={'10'}>
         <Heading>Upload Marks</Heading>
@@ -93,48 +157,54 @@ const UploadMarks = () => {
             </Heading>
             <form onSubmit={handleSubmit}>
               <FormControl marginTop={'10'}>
-                <FormLabel>Subject 1</FormLabel>
+                <FormLabel>Ideation</FormLabel>
                 <Input
                   type="number"
-                  name="subject1"
-                  value={marks.subject1}
+                  name="Ideation"
+                  value={marks.Ideation}
                   onChange={handleMarksChange}
                   required
                 />
               </FormControl>
               <FormControl marginTop={'10'}>
-                <FormLabel>Subject 2</FormLabel>
+                <FormLabel>Execution</FormLabel>
                 <Input
                   type="number"
-                  name="subject2"
-                  value={marks.subject2}
+                  name="Execution"
+                  value={marks.Execution}
                   onChange={handleMarksChange}
                   required
                 />
               </FormControl>
               <FormControl marginTop={'10'}>
-                <FormLabel>Subject 3</FormLabel>
+                <FormLabel>Theory</FormLabel>
                 <Input
                   type="number"
-                  name="subject3"
-                  value={marks.subject3}
+                  name="Theoru"
+                  value={marks.Theory}
                   onChange={handleMarksChange}
                   required
                 />
               </FormControl>
               <FormControl marginTop={'10'}>
-                <FormLabel>Subject 4</FormLabel>
+                <FormLabel>Viva</FormLabel>
                 <Input
                   type="number"
-                  name="subject4"
-                  value={marks.subject4}
+                  name="Viva"
+                  value={marks.Viva}
                   onChange={handleMarksChange}
                   required
                 />
               </FormControl>
+              <Flex>
               <Button type="submit" onClick={handleSubmit} variant="solid" colorScheme="blue" marginTop={'10'}>
                 Upload Marks
               </Button>
+              <Spacer></Spacer>
+              <Button type="submit" onClick={handleFinalSubmit} variant="solid" colorScheme="blue" marginTop={'10'}>
+                Lock Marks
+              </Button>
+              </Flex>
 
 
             </form>

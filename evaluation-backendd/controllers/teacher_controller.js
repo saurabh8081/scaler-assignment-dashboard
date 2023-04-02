@@ -57,6 +57,14 @@ class TeacherController {
   async removeStudent(req, res) {
     try {
       const { email, uid } = await req.body;
+      await Teacher.findOne({email:email}).then(teacher=>{
+        if (teacher.students.length <= 3) {
+          res
+            .status(200)
+            .json({ message: "cannot remove further" });
+          return;
+        }
+      });
       const student = await Student.findOne({ uid: uid });
       student.assigned = false;
       student.save();
@@ -78,10 +86,10 @@ class TeacherController {
     try {
       const { uid, ideation, execution, viva, theory } = await req.body;
       const student = await Student.findOne({ uid: uid });
-      // if (student.evaluated == true) {
-      //   res.status(400).json({ message: "student already evaluated" });
-      //   return;
-      // }
+      if (student.evaluated == true) {
+        res.status(400).json({ message: "student already evaluated" });
+        return;
+      }
       Student.updateOne(
         { uid: uid },
         {
@@ -89,7 +97,6 @@ class TeacherController {
           execution: execution,
           viva: viva,
           theory: theory,
-          evaluated: true,
         }
       ).then((updated) => {
         res.json({ message: "student evaluated successfully" });

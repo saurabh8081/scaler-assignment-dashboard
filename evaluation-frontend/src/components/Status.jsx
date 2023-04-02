@@ -41,8 +41,8 @@ const MarksView = () => {
     <>
       <Container marginTop={"10"}>
         <Select placeholder='Select option' onChange={handleOptionChange}>
-          <option value='assigned'>Marks Assigned</option>
-          <option value='notAssigned'>Marks Not Assigned</option>
+          <option value='assigned'>Marks Locked</option>
+          <option value='notAssigned'>Marks Not Locked</option>
         </Select>
       </Container>
 
@@ -66,8 +66,8 @@ const MarksView = () => {
 
                     </Box>
                     <Box>
-                      <Heading size='xs' textTransform='uppercase'>
-                        {uid}
+                      <Heading size='xs' >
+                        Email : {email}
                       </Heading>
 
                     </Box>

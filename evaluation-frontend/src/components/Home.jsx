@@ -13,6 +13,8 @@ import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useToast } from '@chakra-ui/react';
+import { useNavigate } from "react-router-dom";
 
 const headingOptions = {
   pos: 'absolute',
@@ -28,6 +30,13 @@ const headingOptions = {
 const Home = () => {
   const [assignedStudents, setAssignedStudents] = useState([]);
 
+  const navigate = useNavigate();
+  const handleAddStudentClick = () => {
+  navigate('/AddStudent');
+}
+
+const toast = useToast();
+
   const fetchAssignedStudents = async (email) => {
     try {
       const response = await axios.post('http://localhost:5000/teacher/assignedStudents', { email });
@@ -38,18 +47,33 @@ const Home = () => {
   };
 
   const removeStudent = async (email, uid) => {
-    console.log(email, uid);
-    email = "sumit@gmail.com";
-    await axios.post('http://localhost:5000/teacher/removeStudent', { email, uid })
-      .then(res => {
-        console.log(res.data);
-        // TODO: handle successful response
-      })
-      .catch(err => {
-        console.error(err);
-        // TODO: handle error response
+    try {
+      console.log(email, uid);
+      email = "sumit@gmail.com";
+      const response = await axios.post('http://localhost:5000/teacher/removeStudent', { email, uid });
+      console.log(response.data);
+      // Show success toast
+      toast({
+        title: "Student removed successfully",
+        status: "success",
+        position: "top",
+        duration: 3000,
+        colorScheme:"purple",
+        isClosable: true,
       });
-  }
+    } catch (error) {
+      console.error(error);
+      // Show error toast
+      toast({
+        title: "An error occurred",
+        description: "Failed to remove student",
+        status: "error",
+        duration: 3000,
+        colorScheme:"purple",
+        isClosable: true,
+      });
+    }
+  };
   
   fetchAssignedStudents("sumit@gmail.com");
   return (
@@ -77,7 +101,7 @@ const Home = () => {
             </CardBody>
 
             <CardFooter>
-              <Button variant="solid" colorScheme="blue">
+            <Button variant="solid" colorScheme="blue" onClick={ handleAddStudentClick}>
                 Add Student
               </Button>
             </CardFooter>

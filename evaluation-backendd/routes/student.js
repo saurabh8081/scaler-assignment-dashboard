@@ -5,6 +5,7 @@ const Student=require("../models/student")
 
 //adding a student
 studentRouter.post("/createStudent", StudentController.createStudent);
+studentRouter.post("/lockStudent",StudentController.lockStudent);
 
 studentRouter.get("/unassignedStudents", StudentController.unassignedStudents);
 studentRouter.get("/allstudents", async (req, res) => {
